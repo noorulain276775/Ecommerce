@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'phone', 'username', 'password', 'password2','first_name', 'last_name', 'date_of_birth']
+        fields = ['id', 'phone', 'password', 'password2','first_name', 'last_name', 'date_of_birth']
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
@@ -30,9 +30,10 @@ class UserSerializer(serializers.ModelSerializer):
             phone=validated_data['phone'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            username=validated_data['username'],
             date_of_birth=validated_data['date_of_birth'],
             password= (validated_data['password'])
         )
 
         return user
+    
+
