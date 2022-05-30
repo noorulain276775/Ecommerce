@@ -58,11 +58,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Ecommerce.urls'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ),
-    'PAGE_SIZE': 10
+    ]
 }
 
 TEMPLATES = [
