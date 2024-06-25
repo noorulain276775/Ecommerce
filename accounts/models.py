@@ -6,6 +6,7 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractUser):
+    username= None
     first_name = models.CharField(max_length=15)
     last_name = models.CharField(max_length=15)
     phone = models.CharField(max_length=12, unique=True, help_text="phone must be in this format : 923xxxxxxxxx")
