@@ -18,3 +18,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
+
+### About Ecommerce Application
+This is a multivendor ecommerce application. So far, user authentication has been implemented using a custom JWT token-based authentication scheme, which differs from Django's default session-based authentication. All APIs have been tested and are functioning correctly. Currently, work is ongoing to develop the user interface. 
+
