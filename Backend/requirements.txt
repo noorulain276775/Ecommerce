@@ -1,4 +1,7 @@
-Django
-djangorestframework
-django-environ
-msqlclient
+asgiref==3.8.1
+Django==5.0.6
+django-environ==0.11.2
+djangorestframework==3.15.2
+ez_setup==0.9
+mysqlclient==2.2.4
+sqlparse==0.5.0
