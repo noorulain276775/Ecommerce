@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 class Seller(models.Model):
     name = models.CharField(max_length=256)
@@ -19,15 +22,23 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     discounted_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    slug = models.SlugField(max_length=256, unique=True, blank=True, default='default-slug')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
         if self.discount_percentage > 0:
             self.discounted_price = self.price - (self.price * self.discount_percentage / 100)
         else:
             self.discounted_price = None
         super().save(*args, **kwargs)
+
+@receiver(pre_save, sender=Product)
+def pre_save_product_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug or instance.slug == 'default-slug':
+        instance.slug = slugify(instance.title)
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)

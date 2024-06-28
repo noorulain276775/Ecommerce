@@ -1,0 +1,70 @@
+
+
+.login-question {
+    color: #202020;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.login-question2 {
+    color: #202020;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.login-button2 {
+    background-color: #202020;
+    padding: 8px 0;
+    border: none;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: #F3F3F3;
+    cursor: pointer;
+    border-radius: 30px;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.registerlogo {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 8%; 
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.registerlogo img {
+    width: 100%;
+    height: auto;
+}
+
+.registercreate-account {
+    font-family: "Raleway", sans-serif;
+    font-size: 45px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    transform: translateY(-50%);
+}
+
+.next-step-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+
+}
