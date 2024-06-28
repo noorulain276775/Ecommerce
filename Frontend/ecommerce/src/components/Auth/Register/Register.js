@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "../Login/Login.css";
 import "./Register.css";
-import logo from "../../assets/images/logo.svg";
-import headerImage from "../../assets/images/Bubbles.png";
-import blueArrow from "../../assets/images/Button.svg";
+import logo from "../../../assets/images/logo.svg";
+import headerImage from "../../../assets/images/Bubbles.png";
+import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -54,15 +54,17 @@ const Register = () => {
     <div className="login-container">
       <div className="loginform-container">
         <div className="header-image">
-          <img src={headerImage} alt="Header" />
+          <img src={headerImage} alt="Header" className="bubbles"/>
         </div>
         <div className="logo">
           <img src={logo} alt="Shopee" />
         </div>
         <h1 className="create-account">Create Account</h1>
+        
         <form className="form-login" onSubmit={handleSubmit}>
           {step === 1 && (
             <>
+            <p className="slogan-login">Welcome to Our eCommerce Platform!</p>
               <input
                 onChange={handlePhoneNumberChange}
                 className="login-input"

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Login.css";
-import '../Register/Register.css'
-import logo from "../../assets/images/logo.svg";
-import headerImage from "../../assets/images/Bubbles.png";
-import blueArrow from "../../assets/images/Button.svg";
+import "../Register/Register.css";
+import logo from "../../../assets/images/logo.svg";
+import headerImage from "../../../assets/images/Bubbles.png";
+import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
     <div className="login-container">
       <div className="loginform-container">
         <div className="header-image">
-          <img src={headerImage} alt="Header" />
+          <img src={headerImage} alt="Header" className="bubbles" />
         </div>
         <div className="logo">
           <img src={logo} alt="Shopee" />
@@ -51,20 +51,23 @@ const Login = () => {
             placeholder="Password"
             value={password}
           />
+          <Link to={"/forgot-password"}>
+            <p className="forgot-password">Forgot Password?</p>
+          </Link>
           <button className="login-button2" type="submit">
             Login
           </button>
           <div className="next-step-container">
-                <p className="login-question2">Don't have account?</p>
-                <Link to={'/register'}>
-                  <img
-                    src={blueArrow}
-                    alt="Next Step"
-                    className="blue-arrow"
-                    style={{ cursor: "pointer" }}
-                  />
-                </Link>
-              </div>
+            <p className="login-question2">Don't have account?</p>
+            <Link to={"/register"}>
+              <img
+                src={blueArrow}
+                alt="Next Step"
+                className="blue-arrow"
+                style={{ cursor: "pointer" }}
+              />
+            </Link>
+          </div>
         </form>
       </div>
     </div>

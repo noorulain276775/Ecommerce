@@ -1,0 +1,56 @@
+.otp-inputs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .otp-inputs input {
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    outline: none;
+  }
+
+  .otp-verification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 15px;
+  }
+
+  .otp-submit {
+    background-color: #004CFF;
+    padding: 5px 0;
+    border: none;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: #F3F3F3;
+    cursor: pointer;
+    border-radius: 30px;
+    width: 80%;
+    text-align: center;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .cancel {
+    background-color: rgb(216, 13, 13);
+  }
+
+  .otp-resend{
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: "Nunito Sans", sans-serif;
+    color: rgb(104, 103, 103) !important
+}
+
+.additional {
+    top: 43% !important;
+}

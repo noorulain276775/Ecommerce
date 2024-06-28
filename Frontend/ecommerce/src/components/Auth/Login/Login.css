@@ -5,10 +5,10 @@
 .login-container {
     background-color: rgb(255, 255, 255);
     display: flex;
-    height: 100vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
 }
 
 .loginform-container {
@@ -59,7 +59,7 @@
 
 .login-input {
     background-color: #F8F8F8;
-    padding: 12px 15px;
+    padding: 7px 15px;
     font-family: "Poppins", sans-serif;
     border-radius: 30px;
     border: 1px solid #ddd;
@@ -71,12 +71,12 @@
 .form-login {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 10px;
 }
 
 .login-button {
     background-color: #004CFF;
-    padding: 8px 0;
+    padding: 5px 0;
     border: none;
     font-family: "Nunito Sans", sans-serif;
     font-size: 18px;
@@ -99,4 +99,21 @@
     top: 40%;
     width: 100%;
     transform: translateY(-50%);
+}
+
+.forgot-password{
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: "Nunito Sans", sans-serif;
+    color: rgb(104, 103, 103) !important
+}
+
+.bubbles {
+    height: 300px !important
+}
+.bubbles2 {
+    height: 350px !important
 }
