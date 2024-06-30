@@ -5,8 +5,13 @@ import logo from "../../../assets/images/logo.svg";
 import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../store/authSlice";
 
 const Login = () => {
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  console.log(isLoggedIn)
+  const dispatch = useDispatch()
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,8 +25,8 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(phone);
-    console.log(password);
+    console.log(phone)
+    dispatch(authActions.login())
   };
 
   return (
@@ -42,6 +47,7 @@ const Login = () => {
             id="phone"
             placeholder="Phone number"
             value={phone}
+            required
           />
           <input
             onChange={handlePasswordChange}
@@ -50,6 +56,7 @@ const Login = () => {
             type="password"
             placeholder="Password"
             value={password}
+            required
           />
           <Link to={"/forgot-password"}>
             <p className="forgot-password">Forgot Password?</p>
