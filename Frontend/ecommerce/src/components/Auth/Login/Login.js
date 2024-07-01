@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./Login.css";
-import "../Register/Register.css";
 import logo from "../../../assets/images/logo.svg";
 import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { doLogin } from "../../../store/slices/loginSlice";
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,9 +21,21 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const data = {
+    phone,
+    password,
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(phone)
+    try {
+      const resultAction = await dispatch(doLogin(data));
+      if (doLogin.fulfilled.match(resultAction)) {
+        navigate("/seller");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -41,6 +54,8 @@ const Login = () => {
             onChange={handlePhoneNumberChange}
             className="login-input"
             id="phone"
+            name="phone"
+            type="tel"
             placeholder="Phone number"
             value={phone}
             required
@@ -49,6 +64,7 @@ const Login = () => {
             onChange={handlePasswordChange}
             className="login-input"
             id="password"
+            name="password"
             type="password"
             placeholder="Password"
             value={password}
@@ -61,7 +77,7 @@ const Login = () => {
             Login
           </button>
           <div className="next-step-container">
-            <p className="login-question2">Don't have account?</p>
+            <p className="login-question2">Don't have an account?</p>
             <Link to={"/register"}>
               <img
                 src={blueArrow}
