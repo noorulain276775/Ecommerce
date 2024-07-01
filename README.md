@@ -9,6 +9,7 @@ This application uses Redux Toolkit for managing state and fetching data from ba
 # Tech stack Ecommerce
 Django Restframework <br>
 Reactjs
+Reducx toolkit
 
 ### Steps to install dependencies
 1) Create a virtual enviroment <br>
