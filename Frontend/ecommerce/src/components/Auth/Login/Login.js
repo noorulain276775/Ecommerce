@@ -6,11 +6,8 @@ import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../../../store/authSlice";
 
 const Login = () => {
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  console.log(isLoggedIn)
   const dispatch = useDispatch()
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +23,6 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(phone)
-    dispatch(authActions.login())
   };
 
   return (

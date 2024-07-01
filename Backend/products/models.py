@@ -8,9 +8,15 @@ class Seller(models.Model):
     description = models.TextField(max_length=1000)
     shop_logo = models.ImageField(upload_to='logo')
 
+    def __str__(self):
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=256)
     image = models.ImageField(upload_to='category')
+
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     title = models.CharField(max_length=256, unique=True)
@@ -34,6 +40,9 @@ class Product(models.Model):
         else:
             self.discounted_price = None
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 @receiver(pre_save, sender=Product)
 def pre_save_product_receiver(sender, instance, *args, **kwargs):
