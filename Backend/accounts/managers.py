@@ -1,8 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
 
-PHONE_REGEX = r"(^923+[0-9]+$)"
+PHONE_REGEX = r"(^923[0-9]{9}$)"
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, phone, password, **extra_fields):
@@ -10,15 +11,14 @@ class CustomUserManager(BaseUserManager):
         Create and save a User with the given phone and password.
         """
         if not phone:
-            raise ValueError(_('Phone number must be set'))
-        validate_phone_format= self.validate_phone(phone)
-        if validate_phone_format == '1':
+            raise ValidationError(_('Phone number must be set'))
+        if self.validate_phone(phone):
             user = self.model(phone=phone, **extra_fields)
             user.set_password(password)
             user.save()
             return user
         else:
-            raise ValueError(_('Incorrect Phone format'))
+            raise ValidationError(_('Incorrect phone number format'))
 
     def create_superuser(self, phone, password, **extra_fields):
         """
@@ -29,23 +29,15 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_active', True)
 
         if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser must have is_staff=True.'))
+            raise ValidationError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True.'))
-        if self.validate_phone(phone) == '1':
+            raise ValidationError(_('Superuser must have is_superuser=True.'))
+        if self.validate_phone(phone):
             return self.create_user(phone, password, **extra_fields)
         else:
-            raise ValueError(_('Phone number must be 923xxxxxxxxx format'))
-    
+            raise ValidationError(_('Phone number must be in the format 923xxxxxxxxx'))
+
     def validate_phone(self, phone):
-        try:
-            """
-            formats the mobile number in correct form
-            """
-            if len(phone) == 12:
-                if phone and not re.match(PHONE_REGEX, phone):
-                    return str(0)
-                else:
-                    return str(1)
-        except:
-            raise ValueError(_("An error occured while validating format of phone no: "))
+        if len(phone) == 12 and re.match(PHONE_REGEX, phone):
+            return True
+        return False
