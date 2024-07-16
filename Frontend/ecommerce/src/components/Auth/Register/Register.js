@@ -1,18 +1,25 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "../Login/Login.css";
 import "./Register.css";
 import logo from "../../../assets/images/logo.svg";
 import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+  // const [photo, setPhoto] = useState(null);
   const [step, setStep] = useState(1);
+  const [dateError, setDateError] = useState("");
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
@@ -34,13 +41,31 @@ const Register = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleDateOfBirthChange = (date) => {
+    setDateOfBirth(date);
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 10, today.getMonth(), today.getDate());
+    if (date > minDate) {
+      setDateError("You must be at least 10 years old.");
+    } else {
+      setDateError("");
+    }
+  };
+
+  // const handlePhotoChange = (e) => {
+  //   setPhoto(e.target.files[0]);
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(phone);
-    console.log(password);
-    console.log(confirmPassword);
-    console.log(firstName);
-    console.log(lastName);
+    // try {
+    //   const resultAction = await dispatch(doLogin(data));
+    //   if (doLogin.fulfilled.match(resultAction)) {
+    //     navigate("/seller");
+    //   }
+    // } catch (error) {
+    //   console.error("Login failed:", error);
+    // }
   };
 
   const handleNextStep = () => {
@@ -50,6 +75,12 @@ const Register = () => {
   const handleBackStep = () => {
     setStep(1);
   };
+
+  const getMaxDate = () => {
+    const today = new Date();
+    return new Date(today.getFullYear() - 10, today.getMonth(), today.getDate());
+  };
+
   return (
     <div className="login-container">
       <div className="loginform-container">
@@ -64,7 +95,7 @@ const Register = () => {
         <form className="form-login" onSubmit={handleSubmit}>
           {step === 1 && (
             <>
-            <p className="slogan-login">Welcome to Our eCommerce Platform!</p>
+              <p className="slogan-login">Welcome to Our eCommerce Platform!</p>
               <input
                 onChange={handlePhoneNumberChange}
                 className="login-input"
@@ -91,7 +122,7 @@ const Register = () => {
               <button
                 onClick={handleNextStep}
                 className="login-button2"
-                type="submit"
+                type="button"
               >
                 Next
               </button>
@@ -125,10 +156,29 @@ const Register = () => {
                 placeholder="Last Name"
                 value={lastName}
               />
+              <DatePicker
+                selected={dateOfBirth}
+                onChange={handleDateOfBirthChange}
+                className="login-input date-pick"
+                id="date_of_birth"
+                placeholderText="Select date of birth (optional)"
+                dateFormat="yyyy-MM-dd"
+                showYearDropdown
+                showMonthDropdown
+                dropdownMode="select"
+                maxDate={getMaxDate()}
+              />
+              {dateError && <p className="error-message">{dateError}</p>}
+              {/* <input
+                onChange={handlePhotoChange}
+                className="login-input"
+                id="photo"
+                type="file"
+              /> */}
               <button
                 onClick={handleBackStep}
                 className="login-button2"
-                type="submit"
+                type="button"
               >
                 Go Back
               </button>

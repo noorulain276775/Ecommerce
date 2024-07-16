@@ -4,7 +4,7 @@ import API_URL from "../../constant";
 
 // When this action is dispatched, it will call the api
 export const fetchSeller = createAsyncThunk("sellerList", async () => {
-  const response = await fetch(`${API_URL}/api/seller`);
+  const response = await fetch(`${API_URL}/api/sellers/`);
   return response.json();
 });
 const sellerSlice = createSlice({

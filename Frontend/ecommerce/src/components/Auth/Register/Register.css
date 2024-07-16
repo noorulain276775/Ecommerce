@@ -1,5 +1,4 @@
 
-
 .login-question {
     color: #202020;
     font-family: "Nunito Sans", sans-serif;
@@ -8,6 +7,18 @@
     margin: 0;
     padding: 0;
     margin-top: 15px;
+}
+
+.date-pick {
+    width: 100%;
+}
+
+.react-datepicker-popper {
+    overflow: visible !important;
+}
+
+.react-datepicker__header__dropdown{
+    margin-top: 5px;
 }
 
 .login-question2 {
@@ -68,3 +79,4 @@
     margin-top: 15px;
 
 }
+
