@@ -8,29 +8,34 @@ import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { doRegister } from "../../../store/slices/registerSlice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [password2, setpassword2] = useState("");
+  const [first_name, setfirst_name] = useState("");
+  const [last_name, setlast_name] = useState("");
+  const [dateOfBirth, setdateOfBirth] = useState(null);
   // const [photo, setPhoto] = useState(null);
+
+
   const [step, setStep] = useState(1);
   const [dateError, setDateError] = useState("");
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+  const handlepassword2Change = (e) => {
+    setpassword2(e.target.value);
   };
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
+  const handlefirst_nameChange = (e) => {
+    setfirst_name(e.target.value);
   };
 
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
+  const handlelast_nameChange = (e) => {
+    setlast_name(e.target.value);
   };
 
   const handlePhoneNumberChange = (e) => {
@@ -41,8 +46,8 @@ const Register = () => {
     setPassword(e.target.value);
   };
 
-  const handleDateOfBirthChange = (date) => {
-    setDateOfBirth(date);
+  const handledateOfBirthChange = (date) => {
+    setdateOfBirth(date);
     const today = new Date();
     const minDate = new Date(today.getFullYear() - 10, today.getMonth(), today.getDate());
     if (date > minDate) {
@@ -56,16 +61,25 @@ const Register = () => {
   //   setPhoto(e.target.files[0]);
   // };
 
+  const data = {
+    phone,
+    password,
+    first_name,
+    last_name,
+    dateOfBirth,
+    password2,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const resultAction = await dispatch(doLogin(data));
-    //   if (doLogin.fulfilled.match(resultAction)) {
-    //     navigate("/seller");
-    //   }
-    // } catch (error) {
-    //   console.error("Login failed:", error);
-    // }
+    try {
+      const resultAction = await dispatch(doRegister(data));
+      if (doRegister.fulfilled.match(resultAction)) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   const handleNextStep = () => {
@@ -112,12 +126,12 @@ const Register = () => {
                 value={password}
               />
               <input
-                onChange={handleConfirmPasswordChange}
+                onChange={handlepassword2Change}
                 className="login-input"
                 id="confirm_password"
                 type="password"
                 placeholder="Confirm Password"
-                value={confirmPassword}
+                value={password2}
               />
               <button
                 onClick={handleNextStep}
@@ -143,24 +157,24 @@ const Register = () => {
             <>
               <p className="slogan-login">We would love to know your name</p>
               <input
-                onChange={handleFirstNameChange}
+                onChange={handlefirst_nameChange}
                 className="login-input"
                 id="first_name"
                 placeholder="First Name"
-                value={firstName}
+                value={first_name}
               />
               <input
-                onChange={handleLastNameChange}
+                onChange={handlelast_nameChange}
                 className="login-input"
                 id="last_name"
                 placeholder="Last Name"
-                value={lastName}
+                value={last_name}
               />
               <DatePicker
                 selected={dateOfBirth}
-                onChange={handleDateOfBirthChange}
+                onChange={handledateOfBirthChange}
                 className="login-input date-pick"
-                id="date_of_birth"
+                id="dateOfBirth"
                 placeholderText="Select date of birth (optional)"
                 dateFormat="yyyy-MM-dd"
                 showYearDropdown
