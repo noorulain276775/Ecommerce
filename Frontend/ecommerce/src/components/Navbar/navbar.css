@@ -1,0 +1,124 @@
+.nav {
+  background: #fff;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+  z-index: 10;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+}
+
+.searchBar {
+  flex-grow: 1;
+  max-width: 600px; /* Restrict max width */
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 0 20px;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+.searchIcon {
+  cursor: pointer;
+  margin-left: 5px;
+  color: #007bff;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+  margin-right: -22px;
+}
+
+.navItem {
+  height: 80px;
+}
+
+.navLink {
+  color: #000;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  color: #007bff;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+}
+
+.navBtnLink {
+  border-radius: 4px;
+  background: #007bff;
+  padding: 10px 22px;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.navBtnLink:hover {
+  background: #fff;
+  color: #007bff;
+}
+
+@media screen and (max-width: 1180px) and (min-width: 919px) {
+  .searchBar {
+    margin: 0;
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 918px) and (min-width: 769px) {
+  .searchBar {
+    margin: 0;
+    max-width: 250px;
+  }
+  .nav {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .searchBar {
+    margin: 0;
+    max-width: 270px;
+  }
+
+  .nav {
+    width: 95%;
+  }
+
+  .navMenu {
+    display: none;
+  }
+
+  .navBtn {
+    display: none;
+  }
+}
