@@ -1,25 +1,25 @@
-// components/Home.js
-import React from "react";
-// import { useDispatch } from "react-redux";
-// import { fetchSeller } from "../../store/slices/sellerSlice";
-// import { useNavigate } from "react-router-dom";
+// Home.js
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFlashSaleProducts } from "../../store/slices/flashSaleSlice";
 import Navbar from "../Navbar/Navbar";
+import SeoBar from "../SEOBar/SeoBar";
+import FlashSale from "../FlashSale/FlashSale";
 
 export default function Home() {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const flashSale = useSelector((state) => state.flashSale);
+  console.log(flashSale)
 
-//   const handleFetchSeller = () => {
-//     dispatch(fetchSeller());
-//     navigate("/seller");
-//   };
+  useEffect(() => {
+    dispatch(fetchFlashSaleProducts());
+  }, [dispatch]);
 
   return (
     <>
-    <Navbar />
-      {/* <div>
-        <button onClick={handleFetchSeller}>Seller</button>
-      </div> */}
+      <Navbar />
+      <SeoBar />
+      <FlashSale data={flashSale.data} isLoading={flashSale.isLoading} isError={flashSale.isError} />
     </>
   );
 }

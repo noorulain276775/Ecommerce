@@ -4,6 +4,12 @@ from django.db import models
 from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
+    USER_TYPE_CHOICES = (
+        ('customer', 'Customer'),
+        ('admin', 'Admin'),
+        ('seller', 'Seller'),
+    )
+    
     username = None
     first_name = models.CharField(
         max_length=255,
@@ -28,6 +34,11 @@ class CustomUser(AbstractUser):
     )
     photo = models.ImageField(upload_to='users', blank=True, null=True, default='users/person.png')
     date_of_birth = models.DateField(blank=True, null=True)
+    user_type = models.CharField(
+        max_length=10,
+        choices=USER_TYPE_CHOICES,
+        default='customer'
+    )
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []

@@ -128,8 +128,20 @@ class CategoryDetailView(APIView):
 class ProductView(APIView):
     def get(self, request):
         try:
-            product = Product.objects.all()
-            serializer = ProductSerializer(product, many=True)
+            flash_sale = request.query_params.get('flash_sale')
+            best_seller_product = request.query_params.get('best_seller_product')
+            featured_product = request.query_params.get('featured_product')
+
+            products = Product.objects.all()
+
+            if flash_sale is not None:
+                products = products.filter(flash_sale=flash_sale.lower() == 'true')
+            if best_seller_product is not None:
+                products = products.filter(best_seller_product=best_seller_product.lower() == 'true')
+            if featured_product is not None:
+                products = products.filter(featured_product=featured_product.lower() == 'true')
+
+            serializer = ProductSerializer(products, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -144,7 +156,6 @@ class ProductView(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 class ProductDetailView(APIView):
     def put(self, request, id):
         try:
@@ -153,8 +164,7 @@ class ProductDetailView(APIView):
             except Product.DoesNotExist:
                 return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = ProductSerializer(
-                product, data=request.data, partial=True)
+            serializer = ProductSerializer(product, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -162,7 +172,6 @@ class ProductDetailView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
     def get(self, request, id):
         try:
@@ -173,7 +182,7 @@ class ProductDetailView(APIView):
             return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
     def delete(self, request, id):
         try:
             product = Product.objects.get(id=id)
@@ -183,4 +192,3 @@ class ProductDetailView(APIView):
             return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
