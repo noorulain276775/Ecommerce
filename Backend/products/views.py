@@ -1,11 +1,21 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.pagination import PageNumberPagination
 from .models import Seller, Category, Product
 from .serializers import SellerSerializer, CategorySerializer, ProductSerializer
 
 
+class CustomPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class SellerView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def get(self, request):
         try:
             sellers = Seller.objects.all()
@@ -15,6 +25,10 @@ class SellerView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
+        # Check authentication for POST requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             serializer = SellerSerializer(data=request.data)
             if serializer.is_valid():
@@ -26,7 +40,12 @@ class SellerView(APIView):
 
 
 class SellerDetailView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def put(self, request, id):
+        # Check authentication for PUT requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             try:
                 seller = Seller.objects.get(id=id)
@@ -55,6 +74,10 @@ class SellerDetailView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     def delete(self, request, id):
+        # Check authentication for DELETE requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             seller = Seller.objects.get(id=id)
             seller.delete()
@@ -66,6 +89,8 @@ class SellerDetailView(APIView):
         
 
 class CategoryView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def get(self, request):
         try:
             category = Category.objects.all()
@@ -75,6 +100,10 @@ class CategoryView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
+        # Check authentication for POST requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             serializer = CategorySerializer(data=request.data)
             if serializer.is_valid():
@@ -86,7 +115,12 @@ class CategoryView(APIView):
 
 
 class CategoryDetailView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def put(self, request, id):
+        # Check authentication for PUT requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             try:
                 category = Category.objects.get(id=id)
@@ -115,6 +149,10 @@ class CategoryDetailView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     def delete(self, request, id):
+        # Check authentication for DELETE requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             category = Category.objects.get(id=id)
             category.delete()
@@ -126,13 +164,15 @@ class CategoryDetailView(APIView):
         
 
 class ProductView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def get(self, request):
         try:
             flash_sale = request.query_params.get('flash_sale')
             best_seller_product = request.query_params.get('best_seller_product')
             featured_product = request.query_params.get('featured_product')
 
-            products = Product.objects.all()
+            products = Product.objects.select_related('seller', 'category').all()
 
             if flash_sale is not None:
                 products = products.filter(flash_sale=flash_sale.lower() == 'true')
@@ -141,12 +181,19 @@ class ProductView(APIView):
             if featured_product is not None:
                 products = products.filter(featured_product=featured_product.lower() == 'true')
 
-            serializer = ProductSerializer(products, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            # Add pagination
+            paginator = CustomPagination()
+            paginated_products = paginator.paginate_queryset(products, request)
+            serializer = ProductSerializer(paginated_products, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
+        # Check authentication for POST requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             serializer = ProductSerializer(data=request.data)
             if serializer.is_valid():
@@ -157,7 +204,12 @@ class ProductView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ProductDetailView(APIView):
+    permission_classes = [AllowAny]  # Allow public access to GET
+    
     def put(self, request, id):
+        # Check authentication for PUT requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             try:
                 product = Product.objects.get(id=id)
@@ -184,6 +236,10 @@ class ProductDetailView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, id):
+        # Check authentication for DELETE requests
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        
         try:
             product = Product.objects.get(id=id)
             product.delete()

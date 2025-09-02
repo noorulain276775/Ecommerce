@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database (Development)
+  db:
+    image: postgres:13-alpine
+    container_name: ecommerce_db_dev
+    environment:
+      - POSTGRES_DB=ecommerce_dev
+      - POSTGRES_USER=ecommerce_user
+      - POSTGRES_PASSWORD=ecommerce_password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+
+  # Redis Cache (Development)
+  redis:
+    image: redis:6-alpine
+    container_name: ecommerce_redis_dev
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+
+  # Django Backend (Development)
+  backend:
+    build: .
+    container_name: ecommerce_backend_dev
+    ports:
+      - "8001:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - DATABASE_URL=postgresql://ecommerce_user:ecommerce_password@db:5432/ecommerce_dev
+      - REDIS_URL=redis://redis:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - ./media:/app/media
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+    command: python manage.py runserver 0.0.0.0:8000
+
+  # Celery Worker (Development)
+  celery:
+    build: .
+    container_name: ecommerce_celery_dev
+    command: celery -A Ecommerce worker -l debug --concurrency=2
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - DATABASE_URL=postgresql://ecommerce_user:ecommerce_password@db:5432/ecommerce_dev
+      - REDIS_URL=redis://redis:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+
+  # Celery Beat (Development)
+  celery-beat:
+    build: .
+    container_name: ecommerce_celery_beat_dev
+    command: celery -A Ecommerce beat -l debug
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - DATABASE_URL=postgresql://ecommerce_user:ecommerce_password@db:5432/ecommerce_dev
+      - REDIS_URL=redis://redis:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+
+  # Celery Flower (Development)
+  celery-flower:
+    build: .
+    container_name: ecommerce_celery_flower_dev
+    command: celery -A Ecommerce flower --port=5555
+    ports:
+      - "5556:5555"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - DATABASE_URL=postgresql://ecommerce_user:ecommerce_password@db:5432/ecommerce_dev
+      - REDIS_URL=redis://redis:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - celery
+    networks:
+      - ecommerce_dev_network
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+
+networks:
+  ecommerce_dev_network:
+    driver: bridge

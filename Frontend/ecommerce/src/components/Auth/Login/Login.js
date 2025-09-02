@@ -4,12 +4,13 @@ import logo from "../../../assets/images/logo.svg";
 import headerImage from "../../../assets/images/Bubbles.png";
 import blueArrow from "../../../assets/images/Button.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doLogin } from "../../../store/slices/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { status, error } = useSelector((state) => state.login);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,7 +32,7 @@ const Login = () => {
     try {
       const resultAction = await dispatch(doLogin(data));
       if (doLogin.fulfilled.match(resultAction)) {
-        navigate("/seller");
+        navigate("/");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -43,51 +44,75 @@ const Login = () => {
       <div className="loginform-container">
         <div className="header-image">
           <img src={headerImage} alt="Header" className="bubbles" />
-        </div>
-        <div className="logo">
-          <img src={logo} alt="Shopee" />
-        </div>
-        <h1 className="create-account">Login</h1>
-        <p className="slogan-login">Good to see you back</p>
-        <form className="form-login" onSubmit={handleSubmit}>
-          <input
-            onChange={handlePhoneNumberChange}
-            className="login-input"
-            id="phone"
-            name="phone"
-            type="tel"
-            placeholder="Phone number"
-            value={phone}
-            required
-          />
-          <input
-            onChange={handlePasswordChange}
-            className="login-input"
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            required
-          />
-          <Link to={"/forgot-password"}>
-            <p className="forgot-password">Forgot Password?</p>
-          </Link>
-          <button className="login-button2" type="submit">
-            Login
-          </button>
-          <div className="next-step-container">
-            <p className="login-question2">Don't have an account?</p>
-            <Link to={"/register"}>
-              <img
-                src={blueArrow}
-                alt="Next Step"
-                className="blue-arrow"
-                style={{ cursor: "pointer" }}
-              />
-            </Link>
+          <div className="logo">
+            <img src={logo} alt="Shopee" />
           </div>
-        </form>
+        </div>
+        
+        <div className="form-content">
+          <h1 className="create-account">Welcome Back</h1>
+          <p className="slogan-login">Sign in to your account</p>
+          
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+          
+          <form className="form-login" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <input
+                onChange={handlePhoneNumberChange}
+                className="login-input"
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                required
+              />
+            </div>
+            
+            <div className="input-group">
+              <input
+                onChange={handlePasswordChange}
+                className="login-input"
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                required
+              />
+            </div>
+            
+            <Link to={"/forgot-password"} className="forgot-password">
+              Forgot your password?
+            </Link>
+            
+            <button className="login-button2" type="submit" disabled={status === "loading"}>
+              {status === "loading" ? (
+                <>
+                  <span className="loading-spinner"></span>
+                  Signing in...
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+            
+            <div className="next-step-container">
+              <p className="login-question2">Don't have an account?</p>
+              <Link to={"/register"}>
+                <img
+                  src={blueArrow}
+                  alt="Sign Up"
+                  className="blue-arrow"
+                />
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

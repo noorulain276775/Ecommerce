@@ -84,20 +84,32 @@ const FlashSale = ({ data, isLoading, isError }) => {
       </div>
 
       <Slider {...settings} ref={sliderRef} className="flashProducts">
-        {data &&
-          data.map((product) => (
-            <div key={product.id}>
-              <ProductCard
-                title={product.title}
-                image={product.featured_image}
-                current_price={product.discounted_price}
-                original_price={product.price}
-                percentage={product.discount_percentage}
-                rating={product.average_rating || 0}
-                user_count={product.user_count || 0}
-              />
-            </div>
-          ))}
+        {data && data.results && data.results.map((product) => (
+          <div key={product.id}>
+            <ProductCard
+              title={product.title}
+              image={product.featured_image}
+              current_price={product.discounted_price}
+              original_price={product.price}
+              percentage={product.discount_percentage}
+              rating={product.average_rating || 0}
+              user_count={product.user_count || 0}
+            />
+          </div>
+        ))}
+        {data && !data.results && data.map && data.map((product) => (
+          <div key={product.id}>
+            <ProductCard
+              title={product.title}
+              image={product.featured_image}
+              current_price={product.discounted_price}
+              original_price={product.price}
+              percentage={product.discount_percentage}
+              rating={product.average_rating || 0}
+              user_count={product.user_count || 0}
+            />
+          </div>
+        ))}
       </Slider>
     </div>
   );

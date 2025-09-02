@@ -1,82 +1,183 @@
 
-.login-question {
-    color: #202020;
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 15px;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    margin-top: 15px;
-}
-
+/* Register specific styles */
 .date-pick {
     width: 100%;
+    padding: 16px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    color: #1a1a1a;
+}
+
+.date-pick:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
 }
 
 .react-datepicker-popper {
     overflow: visible !important;
+    z-index: 1000;
 }
 
-.react-datepicker__header__dropdown{
+.react-datepicker__header__dropdown {
     margin-top: 5px;
 }
 
-.login-question2 {
-    color: #202020;
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 15px;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+.field-error {
+    color: #dc2626;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    margin-top: 4px;
+    display: block;
 }
 
-.login-button2 {
-    background-color: #202020;
-    padding: 7px 0;
-    border: none;
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 18px;
-    font-weight: 300;
-    color: #F3F3F3;
-    cursor: pointer;
-    border-radius: 30px;
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-    box-sizing: border-box;
+.login-input.error {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
-.registerlogo {
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.login-button2.secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    flex: 1;
+}
+
+.login-button2.secondary:hover:not(:disabled) {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-button2.secondary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Step indicator */
+.step-indicator {
     display: flex;
     justify-content: center;
-    position: absolute;
-    top: 8%; 
-    left: 50%;
-    transform: translateX(-50%);
+    margin-bottom: 24px;
+    gap: 8px;
 }
 
-.registerlogo img {
+.step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.step-dot.active {
+    background: #667eea;
+    transform: scale(1.2);
+}
+
+.step-dot.completed {
+    background: #10b981;
+}
+
+/* Progress bar */
+.progress-bar {
     width: 100%;
-    height: auto;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
 }
 
-.registercreate-account {
-    font-family: "Raleway", sans-serif;
-    font-size: 45px;
-    text-align: center;
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Password requirements */
+.password-requirements {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
     margin-bottom: 20px;
-    position: absolute;
-    top: 25%;
-    width: 100%;
-    transform: translateY(-50%);
 }
 
-.next-step-container{
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    margin-top: 15px;
+.requirements-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 12px 0;
+}
 
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.requirements-list li {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 20px;
+}
+
+.requirements-list li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.requirements-list li.valid {
+    color: #059669;
+}
+
+.requirements-list li.valid::before {
+    content: '✓';
+    color: #059669;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .button-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .login-button2.secondary {
+        order: 2;
+    }
+    
+    .login-button2:not(.secondary) {
+        order: 1;
+    }
+    
+    .password-requirements {
+        padding: 12px;
+    }
+    
+    .loginform-container {
+        max-height: 95vh;
+    }
 }
 

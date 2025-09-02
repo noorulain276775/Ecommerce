@@ -3,6 +3,7 @@ import Login from './components/Auth/Login/Login';
 import Register from './components/Auth/Register/Register';
 import ForgotPassword from './components/Auth/ForgotPassword/ForgotPassword';
 import OTP from './components/Auth/OTPVerification/OTP';
+import ResetPassword from './components/Auth/ResetPassword/ResetPassword';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/home/Home';
 import Seller from './components/Sellers/Seller';
@@ -15,6 +16,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/verify-otp' element={<OTP/>} />
+        <Route path='/reset-password' element={<ResetPassword/>} />
         <Route path='' element={<Home/>} />
         <Route path='/seller' element={<Seller/>} />
         
