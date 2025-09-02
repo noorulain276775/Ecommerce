@@ -11,7 +11,7 @@ urlpatterns = [
     path('', include('accounts.urls') ),
     path('api/', include('products.urls') ),
     path('api/', include('orders.urls') ),
-    path('api/', include('search.urls') ),
+    path('api/search/', include('search.urls') ),
     
     # Health check endpoints
     path('health/', HealthCheckView.as_view(), name='health_check'),
